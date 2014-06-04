@@ -20,56 +20,60 @@ Include the file from the bower library
 
 Include as a dependency in your angular module
 
-    angular.module('myApp', ['ngStorekit'])
+```javascript
+angular.module('myApp', ['ngStorekit'])
+```
 
 Load storekit when the device is ready
 
-    .run(function($ionicPlatform, $storekit) {
-        $ionicPlatform.ready(function() {
-            $storekit
-                .setLogging(true)
-                .load(['com.yourcompany.inapppurchase.id'])
-                .then(function (products) {
-                    console.log('products loaded');
-                })
-                .catch(function () {
-                    console.log('no products loaded');
-                });
-        });
+```javascript
+.run(function($ionicPlatform, $storekit) {
+    $ionicPlatform.ready(function() {
+        $storekit
+            .setLogging(true)
+            .load(['com.yourcompany.inapppurchase.id'])
+            .then(function (products) {
+                console.log('products loaded');
+            })
+            .catch(function () {
+                console.log('no products loaded');
+            });
     });
+});
+```
 
 Make and restore purchases
 
 ```javascript
-    module.controller('MyCtrl', function($scope, $storekit) {
-    
-        // get products:
-        var products = $storekit.getProducts();
-    
-        // make a purchase:
-        $storekit.purchase('com.yourcompany.inapppurchase.id');
-    
-        // restore purchases:
-        $storekit.restore();
-    
-        // watch for purchases
-        $storekit
-            .watchPurchases()
-            .then(function () {
-                // Not currently used
-            }, function (error) {
-                // An error occured. Show a message to the user
-            }, function (purchase) {
-                if (purchase.productId === 'com.yourcompany.inapppurchase.id') {
-                    if (purchase.type === 'purchase') {
-                        // Your product was purchased
-                    } else if (purchase.type === 'purchase') {
-                        // Your product was restored
-                    }
+module.controller('MyCtrl', function($scope, $storekit) {
+
+    // get products:
+    var products = $storekit.getProducts();
+
+    // make a purchase:
+    $storekit.purchase('com.yourcompany.inapppurchase.id');
+
+    // restore purchases:
+    $storekit.restore();
+
+    // watch for purchases
+    $storekit
+        .watchPurchases()
+        .then(function () {
+            // Not currently used
+        }, function (error) {
+            // An error occured. Show a message to the user
+        }, function (purchase) {
+            if (purchase.productId === 'com.yourcompany.inapppurchase.id') {
+                if (purchase.type === 'purchase') {
+                    // Your product was purchased
+                } else if (purchase.type === 'purchase') {
+                    // Your product was restored
                 }
-            });
-    
-    });
+            }
+        });
+
+});
  ```
 
 ## License
