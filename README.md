@@ -14,7 +14,7 @@ Install with bower
 
 Include the file from the bower library
 
-    <script src="bower_components/ng-storekit/ng-storekit.js"></script>
+    <script src="bower_components/ng-storekit/src/ng-storekit.js"></script>
 
 ## Usage
 
