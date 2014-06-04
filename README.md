@@ -40,6 +40,7 @@ Load storekit when the device is ready
 
 Make and restore purchases
 
+```javascript
     module.controller('MyCtrl', function($scope, $storekit) {
     
         // get products:
@@ -69,6 +70,7 @@ Make and restore purchases
             });
     
     });
+ ```
 
 ## License
 
