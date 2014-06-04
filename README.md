@@ -1,6 +1,6 @@
 # ng-storekit
 
-AngularJS Cordova wrapper for the iOS Cordova In App Purchases plugin
+AngularJS Cordova wrapper for the iOS Cordova [iOS In App Purchases Plugin](https://github.com/j3k0/PhoneGap-InAppPurchase-iOS)
 
 ## Features
 
@@ -10,15 +10,15 @@ AngularJS Cordova wrapper for the iOS Cordova In App Purchases plugin
 
 ## Install
 
-Install the cordova [iOS In App Purchases Plugin](https://github.com/j3k0/PhoneGap-InAppPurchase-iOS):
+Install the cordova [iOS In App Purchases Plugin](https://github.com/j3k0/PhoneGap-InAppPurchase-iOS)
 
     $ cordova plugin add git://github.com/j3k0/PhoneGap-InAppPurchase-iOS.git
 
-Install with bower
+Install ng-storekit with bower
 
     $ bower install ng-storekit
 
-Include the file from the bower library
+Include ng-storekit from the bower library
 
     <script src="bower_components/ng-storekit/src/ng-storekit.js"></script>
 
@@ -55,6 +55,11 @@ module.controller('MyCtrl', function($scope, $storekit) {
 
     // get products:
     var products = $storekit.getProducts();
+    products.forEach(function (product) {
+        console.log(product.productId);
+        console.log(product.description);
+        console.log(product.price);
+    });
 
     // make a purchase:
     $storekit.purchase('com.yourcompany.inapppurchase.id');
@@ -73,9 +78,13 @@ module.controller('MyCtrl', function($scope, $storekit) {
             if (purchase.productId === 'com.yourcompany.inapppurchase.id') {
                 if (purchase.type === 'purchase') {
                     // Your product was purchased
-                } else if (purchase.type === 'purchase') {
+                } else if (purchase.type === 'restore') {
                     // Your product was restored
                 }
+                console.log(purchase.transactionId);
+                console.log(purchase.productId);
+                console.log(purchase.transactionReceipt);
+
             }
         });
 
@@ -86,10 +95,8 @@ module.controller('MyCtrl', function($scope, $storekit) {
 
 * [In-App Purchase Programming Guide](http://developer.apple.com/library/ios/#documentation/NetworkingInternet/Conceptual/StoreKitGuide/Introduction/Introduction.html)
 * A comprehensive tutorial of the [Cordova plugin](http://fovea.cc/blog/index.php/3-steps-tutorial-for-phonegap-in-app-purchase-on-ios/)
-
-## Even More
-
-[cordova-icon](https://github.com/AlexDisler/cordova-icon) automates icon resizing for cordova
+* [ng-cordova](https://github.com/driftyco/ng-cordova) - AngularJS Cordova wrappers for common Cordova plugins
+* [cordova-icon](https://github.com/AlexDisler/cordova-icon) automates icon resizing for cordova
 
 ## License
 
