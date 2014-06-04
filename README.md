@@ -2,6 +2,12 @@
 
 AngularJS Cordova wrapper for the iOS Cordova In App Purchases plugin
 
+## Features
+
+ * Easy to use with Ionic or any AngularJS app
+ * Returns $q promises
+ * Easy testing - emulates in app purchases with fake data when testing in the browser or on an iOS emulator
+
 ## Install
 
 Install the cordova [iOS In App Purchases Plugin](https://github.com/j3k0/PhoneGap-InAppPurchase-iOS):
@@ -75,6 +81,15 @@ module.controller('MyCtrl', function($scope, $storekit) {
 
 });
  ```
+
+## More
+
+* [In-App Purchase Programming Guide](http://developer.apple.com/library/ios/#documentation/NetworkingInternet/Conceptual/StoreKitGuide/Introduction/Introduction.html) and [iTunes Connect Developer Guide](https://itunesconnect.apple.com/docs/iTunesConnect_DeveloperGuide.pdf)
+* A comprehensive tutorial of the [Cordova plugin](http://fovea.cc/blog/index.php/3-steps-tutorial-for-phonegap-in-app-purchase-on-ios/)
+
+## Even More
+
+[cordova-icon](https://github.com/AlexDisler/cordova-icon) automates icon resizing for cordova
 
 ## License
 
