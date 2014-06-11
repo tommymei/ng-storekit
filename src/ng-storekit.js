@@ -183,9 +183,15 @@ angular.module('ngStorekit', [])
                         }
                     });
                 },
-                purchase: _onPurchase,
-                restore:  _onRestore,
-                error:    _onError
+                purchase : function (transactionId, productId, transactionReceipt) {
+                    _onPurchase(transactionId, productId, transactionReceipt);
+                },
+                restore : function (transactionId, productId, transactionReceipt) {
+                    _onRestore(transactionId, productId, transactionReceipt);
+                },
+                error : function (errorCode, errorMessage) {
+                    _onError(errorCode, errorMessage);
+                }
             });
             _storekit = storekit;
         }
