@@ -60,7 +60,7 @@ angular.module('ngStorekit', [])
      */
     fakeStorekit.purchase = function (productId) {
         window.setTimeout(function () {
-            _onPurchase('', productId, '');
+            _onPurchase('', productId);
         }, 300);
     };
 
@@ -69,8 +69,23 @@ angular.module('ngStorekit', [])
      */
     fakeStorekit.restore = function () {
         _productIds.forEach(function (el) {
-            _onRestore('', el, '');
+            _onRestore('', el);
         });
+    };
+
+    fakeStorekit.loadReceipts = function() {
+        var callCallback = function() {
+
+        };
+
+        return callCallback;
+    };
+
+    /**
+     *
+     */
+    fakeStorekit.finish = function (transactionId) {
+
     };
 
     /**
@@ -98,26 +113,45 @@ angular.module('ngStorekit', [])
         _storekit.restore();
     };
 
+
+    /**
+     *
+     */
+    $storekit.loadReceiptForTransaction = function(transactionId) {
+        var deferred = $q.defer();
+
+        _storekit.loadReceipts(function (receipts) {
+            deferred.resolve(receipts.forTransaction(transactionId));
+        });
+
+        return deferred.promise;
+    };
+
+    /**
+     *
+     */
+    $storekit.finish = function (transactionId) {
+        _storekit.finish(transactionId);
+    };
+
     /**
      * @return {Promise}
      */
     $storekit.watchPurchases = function () {
         var deferred = $q.defer();
         var purchase = {};
-        _onRestore = function (transactionId, productId, transactionReceipt) {
+        _onRestore = function (transactionId, productId) {
             purchase = {
                 transactionId      : transactionId,
                 productId          : productId,
-                transactionReceipt : transactionReceipt,
                 type               : 'restore'
             };
             deferred.notify(purchase);
         };
-        _onPurchase = function (transactionId, productId, transactionReceipt) {
+        _onPurchase = function (transactionId, productId) {
             purchase = {
                 transactionId      : transactionId,
                 productId          : productId,
-                transactionReceipt : transactionReceipt,
                 type               : 'purchase'
             };
             deferred.notify(purchase);
@@ -183,11 +217,11 @@ angular.module('ngStorekit', [])
                         }
                     });
                 },
-                purchase : function (transactionId, productId, transactionReceipt) {
-                    _onPurchase(transactionId, productId, transactionReceipt);
+                purchase : function (transactionId, productId) {
+                    _onPurchase(transactionId, productId);
                 },
-                restore : function (transactionId, productId, transactionReceipt) {
-                    _onRestore(transactionId, productId, transactionReceipt);
+                restore : function (transactionId, productId) {
+                    _onRestore(transactionId, productId);
                 },
                 error : function (errorCode, errorMessage) {
                     _onError(errorCode, errorMessage);
