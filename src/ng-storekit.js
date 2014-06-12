@@ -74,6 +74,13 @@ angular.module('ngStorekit', [])
     };
 
     /**
+     *
+     */
+    fakeStorekit.finish(transactionId) = function () {
+
+    };
+
+    /**
      * 
      * @param {Bool}
      * @return {Object}
@@ -96,6 +103,13 @@ angular.module('ngStorekit', [])
      */
     $storekit.restore = function () {
         _storekit.restore();
+    };
+
+    /**
+     *
+     */
+    $storekit.finish = function (transactionId) {
+        _storekit.finish(transactionId);
     };
 
     /**
