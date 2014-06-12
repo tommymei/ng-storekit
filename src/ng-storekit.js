@@ -73,10 +73,18 @@ angular.module('ngStorekit', [])
         });
     };
 
+    fakeStorekit.loadReceipts = function() {
+        var callCallback = function() {
+
+        };
+
+        return callCallback;
+    };
+
     /**
      *
      */
-    fakeStorekit.finish(transactionId) = function () {
+    fakeStorekit.finish = function (transactionId) {
 
     };
 
@@ -103,6 +111,20 @@ angular.module('ngStorekit', [])
      */
     $storekit.restore = function () {
         _storekit.restore();
+    };
+
+
+    /**
+     *
+     */
+    $storekit.loadReceiptForTransaction = function(transactionId) {
+        var deferred = $q.defer();
+
+        _storekit.loadReceipts(function (receipts) {
+            deferred.resolve(receipts.forTransaction(transactionId));
+        });
+
+        return deferred.promise;
     };
 
     /**
