@@ -60,7 +60,7 @@ angular.module('ngStorekit', [])
      */
     fakeStorekit.purchase = function (productId) {
         window.setTimeout(function () {
-            _onPurchase('', productId, '');
+            _onPurchase('', productId);
         }, 300);
     };
 
@@ -69,7 +69,7 @@ angular.module('ngStorekit', [])
      */
     fakeStorekit.restore = function () {
         _productIds.forEach(function (el) {
-            _onRestore('', el, '');
+            _onRestore('', el);
         });
     };
 
@@ -104,20 +104,18 @@ angular.module('ngStorekit', [])
     $storekit.watchPurchases = function () {
         var deferred = $q.defer();
         var purchase = {};
-        _onRestore = function (transactionId, productId, transactionReceipt) {
+        _onRestore = function (transactionId, productId) {
             purchase = {
                 transactionId      : transactionId,
                 productId          : productId,
-                transactionReceipt : transactionReceipt,
                 type               : 'restore'
             };
             deferred.notify(purchase);
         };
-        _onPurchase = function (transactionId, productId, transactionReceipt) {
+        _onPurchase = function (transactionId, productId) {
             purchase = {
                 transactionId      : transactionId,
                 productId          : productId,
-                transactionReceipt : transactionReceipt,
                 type               : 'purchase'
             };
             deferred.notify(purchase);
@@ -183,11 +181,11 @@ angular.module('ngStorekit', [])
                         }
                     });
                 },
-                purchase : function (transactionId, productId, transactionReceipt) {
-                    _onPurchase(transactionId, productId, transactionReceipt);
+                purchase : function (transactionId, productId) {
+                    _onPurchase(transactionId, productId);
                 },
-                restore : function (transactionId, productId, transactionReceipt) {
-                    _onRestore(transactionId, productId, transactionReceipt);
+                restore : function (transactionId, productId) {
+                    _onRestore(transactionId, productId);
                 },
                 error : function (errorCode, errorMessage) {
                     _onError(errorCode, errorMessage);
