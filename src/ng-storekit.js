@@ -180,13 +180,10 @@ angular.module('ngStorekit', [])
      */
     $storekit.load = function (productIds) {
         // check platform and exit if not iOS
-        var isEmulator = false;
-        if (window.device && !device.model.match(/(iPhone|iPod)/)) {
-            isEmulator = true;
-        }
+        var isDevice = /(iPhone|iPod|iPad).*AppleWebKit(?!.*Safari)/i.test(navigator.userAgent);
         _productIds = productIds;
         var deferred = $q.defer();
-        if (!window.storekit || isEmulator) {
+        if (!window.storekit || !isDevice) {
             if (_debug) {
                 console.log("In-App Purchases not available - Using a fake object to emulate in app purchases");
                 products = [];
