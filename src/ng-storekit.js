@@ -7,7 +7,7 @@ angular.module('ngStorekit', [])
  * for installation instructions see https://github.com/j3k0/PhoneGap-InAppPurchase-iOS/blob/master/README.md
  */
 
-.factory('$storekit', function($q) {
+.factory('$storekit', function($q,$http) {
 
     /**
      * @var {Array}
@@ -115,7 +115,7 @@ angular.module('ngStorekit', [])
 
 
     /**
-     *
+     * iOS < 7
      */
     $storekit.loadReceiptForTransaction = function(transactionId) {
         var deferred = $q.defer();
@@ -123,6 +123,53 @@ angular.module('ngStorekit', [])
         _storekit.loadReceipts(function (receipts) {
             deferred.resolve(receipts.forTransaction(transactionId));
         });
+
+        return deferred.promise;
+    };
+
+    /**
+     * iOS < 7
+     */
+    $storekit.loadReceiptForProduct = function(productId){
+        var deferred = $q.defer();
+
+        _storekit.loadReceipts(function(receipts){
+            deferred.resolve(receipts.forProduct(productId));
+        });
+
+        return deferred.promise;
+    };
+
+    /**
+     * iOS >= 7
+     */
+    $storekit.loadAppStoreReceipt = function(){
+        var deferred = $q.defer();
+
+        _storekit.loadReceipts(function(receipts){
+            deferred.resolve(receipts.appStoreReceipt);
+        });
+
+        return deferred.promise;
+    };
+
+    /**
+     *
+     */
+    $storekit.validateReceipt = function(receipt,isSandbox){
+        var deferred = $q.defer();
+        var url = 'https://buy.itunes.apple.com/verifyReceipt';
+
+        if( isSandbox ){
+            url = 'https://sandbox.itunes.apple.com/verifyReceipt';
+        }
+
+        $http.post(url,receipt)
+            .success(function(response){
+                deferred.resolve(response);
+            }).error(function(error){
+                deferred.reject(error);
+            });
 
         return deferred.promise;
     };
