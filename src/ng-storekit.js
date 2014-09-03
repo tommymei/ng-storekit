@@ -23,6 +23,10 @@ angular.module('ngStorekit', [])
      * @var {Bool}
      */
     var _debug = true;
+    /**
+     * @var {Bool}
+     */
+    var _noAutoFinish = false;
 
     /**
      * @var {Object}
@@ -97,6 +101,11 @@ angular.module('ngStorekit', [])
         _debug = debug;
         return this;
     };
+
+    $storekit.setNoAutoFinish = function(noAutoFinish) {
+      _noAutoFinish = noAutoFinish;
+      return this;
+    }
 
     /**
      *
@@ -246,6 +255,7 @@ angular.module('ngStorekit', [])
         } else {
             storekit.init({
                 debug : _debug, // Enable IAP messages on the console
+                noAutoFinish : _noAutoFinish,
                 ready : function () {
                     storekit.load(_productIds, function (products, invalidIds) {
                         _products = products;
