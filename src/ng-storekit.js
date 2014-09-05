@@ -253,7 +253,7 @@ angular.module('ngStorekit', [])
                 deferred.reject('In-App Purchases not available');
             }
         } else {
-            storekit.init({
+            window.storekit.init({
                 debug : _debug, // Enable IAP messages on the console
                 noAutoFinish : _noAutoFinish,
                 ready : function () {
@@ -281,7 +281,7 @@ angular.module('ngStorekit', [])
                     _onError(errorCode, errorMessage);
                 }
             });
-            _storekit = storekit;
+            _storekit = window.storekit;
         }
         return deferred.promise;
     };
