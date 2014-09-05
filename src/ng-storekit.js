@@ -7,7 +7,7 @@ angular.module('ngStorekit', [])
  * for installation instructions see https://github.com/j3k0/PhoneGap-InAppPurchase-iOS/blob/master/README.md
  */
 
-.factory('$storekit', function($q,$http) {
+.factory('$storekit', ['$q','$http', function($q,$http) {
 
     /**
      * @var {Array}
@@ -290,4 +290,4 @@ angular.module('ngStorekit', [])
     return $storekit;
 
 
-});
+}]);
