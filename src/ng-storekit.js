@@ -1,13 +1,13 @@
 angular.module('ngStorekit', [])
 
-/* global storekit */
+  /* global storekit */
 
 /**
  * 'storekit' is a global variable provided by the cordova plugin https://github.com/j3k0/PhoneGap-InAppPurchase-iOS
  * for installation instructions see https://github.com/j3k0/PhoneGap-InAppPurchase-iOS/blob/master/README.md
  */
 
-.factory('$storekit', ['$q','$http', function($q,$http) {
+  .factory('$storekit', ['$q', '$http', function ($q, $http) {
 
     /**
      * @var {Array}
@@ -63,26 +63,26 @@ angular.module('ngStorekit', [])
      * @param {String} productId
      */
     fakeStorekit.purchase = function (productId) {
-        window.setTimeout(function () {
-            _onPurchase('', productId);
-        }, 300);
+      window.setTimeout(function () {
+        _onPurchase('', productId);
+      }, 300);
     };
 
     /**
      *
      */
     fakeStorekit.restore = function () {
-        _productIds.forEach(function (el) {
-            _onRestore('', el);
-        });
+      _productIds.forEach(function (el) {
+        _onRestore('', el);
+      });
     };
 
-    fakeStorekit.loadReceipts = function() {
-        var callCallback = function() {
+    fakeStorekit.loadReceipts = function () {
+      var callCallback = function () {
 
-        };
+      };
 
-        return callCallback;
+      return callCallback;
     };
 
     /**
@@ -93,16 +93,16 @@ angular.module('ngStorekit', [])
     };
 
     /**
-     * 
+     *
      * @param {Bool}
      * @return {Object}
      */
     $storekit.setLogging = function (debug) {
-        _debug = debug;
-        return this;
+      _debug = debug;
+      return this;
     };
 
-    $storekit.setNoAutoFinish = function(noAutoFinish) {
+    $storekit.setNoAutoFinish = function (noAutoFinish) {
       _noAutoFinish = noAutoFinish;
       return this;
     }
@@ -112,114 +112,114 @@ angular.module('ngStorekit', [])
      * @param {String} productId
      */
     $storekit.purchase = function (productId) {
-        _storekit.purchase(productId);
+      _storekit.purchase(productId);
     };
 
     /**
      *
      */
     $storekit.restore = function () {
-        _storekit.restore();
+      _storekit.restore();
     };
 
 
     /**
      * iOS < 7
      */
-    $storekit.loadReceiptForTransaction = function(transactionId) {
-        var deferred = $q.defer();
+    $storekit.loadReceiptForTransaction = function (transactionId) {
+      var deferred = $q.defer();
 
-        _storekit.loadReceipts(function (receipts) {
-            deferred.resolve(receipts.forTransaction(transactionId));
-        });
+      _storekit.loadReceipts(function (receipts) {
+        deferred.resolve(receipts.forTransaction(transactionId));
+      });
 
-        return deferred.promise;
+      return deferred.promise;
     };
 
     /**
      * iOS < 7
      */
-    $storekit.loadReceiptForProduct = function(productId){
-        var deferred = $q.defer();
+    $storekit.loadReceiptForProduct = function (productId) {
+      var deferred = $q.defer();
 
-        _storekit.loadReceipts(function(receipts){
-            deferred.resolve(receipts.forProduct(productId));
-        });
+      _storekit.loadReceipts(function (receipts) {
+        deferred.resolve(receipts.forProduct(productId));
+      });
 
-        return deferred.promise;
+      return deferred.promise;
     };
 
     /**
      * iOS >= 7
      */
-    $storekit.loadAppStoreReceipt = function(){
-        var deferred = $q.defer();
+    $storekit.loadAppStoreReceipt = function () {
+      var deferred = $q.defer();
 
-        _storekit.loadReceipts(function(receipts){
-            deferred.resolve(receipts.appStoreReceipt);
-        });
+      _storekit.loadReceipts(function (receipts) {
+        deferred.resolve(receipts.appStoreReceipt);
+      });
 
-        return deferred.promise;
+      return deferred.promise;
     };
 
     /**
      *
      */
-    $storekit.validateReceipt = function(receipt,isSandbox){
-        var deferred = $q.defer();
-        var url = 'https://buy.itunes.apple.com/verifyReceipt';
+    $storekit.validateReceipt = function (receipt, isSandbox) {
+      var deferred = $q.defer();
+      var url = 'https://buy.itunes.apple.com/verifyReceipt';
 
-        if( isSandbox ){
-            url = 'https://sandbox.itunes.apple.com/verifyReceipt';
-        }
+      if (isSandbox) {
+        url = 'https://sandbox.itunes.apple.com/verifyReceipt';
+      }
 
-        $http.post(url,receipt)
-            .success(function(response){
-                deferred.resolve(response);
-            }).error(function(error){
-                deferred.reject(error);
-            });
+      $http.post(url, receipt)
+        .success(function (response) {
+          deferred.resolve(response);
+        }).error(function (error) {
+          deferred.reject(error);
+        });
 
-        return deferred.promise;
+      return deferred.promise;
     };
 
     /**
      *
      */
     $storekit.finish = function (transactionId) {
-        _storekit.finish(transactionId);
+      _storekit.finish(transactionId);
     };
 
     /**
      * @return {Promise}
      */
     $storekit.watchPurchases = function () {
-        var deferred = $q.defer();
-        var purchase = {};
-        _onRestore = function (transactionId, productId) {
-            purchase = {
-                transactionId      : transactionId,
-                productId          : productId,
-                type               : 'restore'
-            };
-            deferred.notify(purchase);
+      var deferred = $q.defer();
+      var purchase = {};
+      _onRestore = function (transactionId, productId) {
+        purchase = {
+          transactionId: transactionId,
+          productId: productId,
+          type: 'restore'
         };
-        _onPurchase = function (transactionId, productId) {
-            purchase = {
-                transactionId      : transactionId,
-                productId          : productId,
-                type               : 'purchase'
-            };
-            deferred.notify(purchase);
+        deferred.notify(purchase);
+      };
+      _onPurchase = function (transactionId, productId) {
+        purchase = {
+          transactionId: transactionId,
+          productId: productId,
+          type: 'purchase'
         };
-        /**
-         * List of error codes:
-         * https://github.com/j3k0/PhoneGap-InAppPurchase-iOS/blob/master/README.md#documentation
-         */
-        _onError = function (errorCode, errorMessage) {
-            deferred.reject('Error ' + errorCode + ':' + errorMessage);
-        };
-        return deferred.promise;
+        deferred.notify(purchase);
+      };
+      /**
+       * List of error codes:
+       * https://github.com/j3k0/PhoneGap-InAppPurchase-iOS/blob/master/README.md#documentation
+       */
+      _onError = function (errorCode, errorMessage) {
+        deferred.reject('Error ' + errorCode + ':' + errorMessage);
+      };
+      return deferred.promise;
     };
 
     /**
@@ -227,67 +227,91 @@ angular.module('ngStorekit', [])
      * @return {Array}
      */
     $storekit.getProducts = function () {
-        // TODO: make sure webkit and the products already loaded
-        return _products;
+      // TODO: make sure webkit and the products already loaded
+      return _products;
     };
 
     /**
      * @param {Array}
      */
     $storekit.load = function (productIds) {
-        // check platform and exit if not iOS
-        var isDevice = /(iPhone|iPod|iPad).*AppleWebKit(?!.*Safari)/i.test(navigator.userAgent);
-        _productIds = productIds;
-        var deferred = $q.defer();
-        if (!window.storekit || !isDevice) {
-            if (_debug) {
-                console.log("In-App Purchases not available - Using a fake object to emulate in app purchases");
-                products = [];
-                _productIds.forEach(function (el) {
-                    products.push({id : el, price : '$999'});
-                });
-                _storekit = fakeStorekit;
-                _products = products;
-                deferred.resolve(products);
-            } else {
-                deferred.reject('In-App Purchases not available');
-            }
-        } else {
-            storekit.init({
-                debug : _debug, // Enable IAP messages on the console
-                noAutoFinish : _noAutoFinish,
-                ready : function () {
-                    storekit.load(_productIds, function (products, invalidIds) {
-                        _products = products;
-                        if (invalidIds.length && _debug) {
-                            for (var i = 0; i < invalidIds.length; ++i) {
-                                console.log("Error: could not load " + invalidIds[i]);
-                            }
-                        }
-                        if (products.length) {
-                            deferred.resolve(products);
-                        } else {
-                            deferred.reject();
-                        }
-                    });
-                },
-                purchase : function (transactionId, productId) {
-                    _onPurchase(transactionId, productId);
-                },
-                restore : function (transactionId, productId) {
-                    _onRestore(transactionId, productId);
-                },
-                error : function (errorCode, errorMessage) {
-                    _onError(errorCode, errorMessage);
-                }
-            });
-            _storekit = storekit;
+      var isString = function (s) {
+        if (s === null) {
+          return false;
         }
-        return deferred.promise;
+
+        if (s === undefined) {
+          return false;
+        }
+
+        return typeof s === 'string';
+      };
+
+      var getDeviceOS = function () {
+        var platform;
+        if (!!window && !!window.device && isString(window.device.platform)) {
+          platform = window.device.platform;
+        }
+        return platform;
+      };
+
+      var isDeviceiOS = function () {
+        return (getDeviceOS() === 'iOS');
+      };
+
+
+      // check platform and exit if not iOS
+      _productIds = productIds;
+      var deferred = $q.defer();
+      if (!window.storekit || !isDeviceiOS()) {
+        if (_debug) {
+          console.log("In-App Purchases not available - Using a fake object to emulate in app purchases");
+          products = [];
+          _productIds.forEach(function (el) {
+            products.push({id: el, price: '$999'});
+          });
+          _storekit = fakeStorekit;
+          _products = products;
+          deferred.resolve(products);
+        } else {
+          deferred.reject('In-App Purchases not available');
+        }
+      } else {
+        storekit.init({
+          debug: _debug, // Enable IAP messages on the console
+          noAutoFinish: _noAutoFinish,
+          ready: function () {
+            storekit.load(_productIds, function (products, invalidIds) {
+              _products = products;
+              if (invalidIds.length && _debug) {
+                for (var i = 0; i < invalidIds.length; ++i) {
+                  console.log("Error: could not load " + invalidIds[i]);
+                }
+              }
+              if (products.length) {
+                deferred.resolve(products);
+              } else {
+                deferred.reject();
+              }
+            });
+          },
+          purchase: function (transactionId, productId) {
+            _onPurchase(transactionId, productId);
+          },
+          restore: function (transactionId, productId) {
+            _onRestore(transactionId, productId);
+          },
+          error: function (errorCode, errorMessage) {
+            _onError(errorCode, errorMessage);
+          }
+        });
+        _storekit = storekit;
+      }
+      return deferred.promise;
     };
 
 
     return $storekit;
 
 
-}]);
+  }]);
